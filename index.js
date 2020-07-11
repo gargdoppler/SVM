@@ -24,7 +24,7 @@ const loss = (expected, actual) => {
 //The Main part: SVM!!!!!!
 console.log("Hey Nerd, Check this out!");
 console.log("Behold, the mighty Support Vector Machine!!!");
-console.log("<==========================================>");
+console.log("\n<==========================================>\n\n\n");
 
 const svm = new SVM({
     kernel: SVM.KERNEL_TYPES.RBF,
