@@ -5,6 +5,7 @@
     <title>
         Support Vector Machine
     </title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -93,18 +94,84 @@
             </section>
             <section>
                 <p class="section-head">
-                    Parameters
+                    Playground
                 </p>
-            </section>
-            <section>
-                <p class="section-head">
-                    Learning Curves and Decision Boundaries
-                </p>
-            </section>
-            <section>
-                <p class="section-head">
-                    Testing
-                </p>
+                <div>
+                    <h2>Support vector classification</h2>
+                    <div class="col-lg-5 col-xl-5 col-md-12 mt-sm-3 col">
+                        <form>
+                            <table class="svm-config-table">
+                                <tbody>
+                                    <tr>
+                                        <td><label for="HP_KERNEL">kernel</label></td>
+                                        <td><select name="kernel" id="HP_KERNEL"><option value="0">LINEAR</option><option value="1">POLYNOMIAL</option><option value="2">RBF</option><option value="3">SIGMOID</option></select></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="HP_COST" id="cost_value">cost &nbsp;&nbsp; 1.00e+3</label></td>
+                                        <td><input name="cost" type="range" step="0.0001" min="-3" max="3" id="HP_COST" style="vertical-align: text-top;" class="slider"></td>
+                                        <script>
+                                            var sliderc = document.getElementById("HP_COST");
+                                            var outputc = document.getElementById("cost_value");
+                                            var intc = Math.pow(10, sliderc.value);
+                                            var expoc = Math.round(Number.parseFloat(sliderc.value) - 0.5);
+
+                                            if (expoc >= 0) {
+                                                outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e+" + expoc + "&nbsp;&nbsp;&nbsp;";
+                                            } else {
+                                                outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
+                                            }
+                                            sliderc.oninput = function() {
+                                                intc = Math.pow(10, this.value);
+
+                                                expoc = Math.round(Number.parseFloat(this.value) - 0.5);
+
+                                                if (expoc >= 0) {
+                                                    outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e+" + expoc + "&nbsp;&nbsp;&nbsp;";
+                                                } else {
+                                                    outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
+                                                }
+                                            }
+
+                                            function addZeroes(num) {
+                                                const dec = num.split('.')[1]
+                                                const len = dec && dec.length > 2 ? dec.length : 2
+                                                return Number(num).toFixed(len)
+                                            }
+                                        </script>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="HP_GAMMA" id="gamma_value">gamma &nbsp;&nbsp; 1.00e+1</label></td>
+                                        <td><input name="gamma" type="range" step="0.0001" min="-3" max="3" id="HP_GAMMA" style="vertical-align: text-top;" class="slider"></td>
+                                        <script>
+                                            var sliderg = document.getElementById("HP_GAMMA");
+                                            var outputg = document.getElementById("gamma_value");
+                                            var intg = Math.pow(10, sliderg.value);
+
+                                            var expog = Math.round(Number.parseFloat(sliderg.value) - 0.5);
+
+                                            if (expog >= 0) {
+                                                outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e+" + expog;
+                                            } else {
+                                                outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
+                                            }
+                                            sliderg.oninput = function() {
+                                                intg = Math.pow(10, this.value);
+
+                                                expog = Math.round(Number.parseFloat(this.value) - 0.5);
+
+                                                if (expog >= 0) {
+                                                    outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e+" + expog;
+                                                } else {
+                                                    outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
+                                                }
+                                            }
+                                        </script>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
