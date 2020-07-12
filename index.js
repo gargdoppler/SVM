@@ -21,23 +21,51 @@ const loss = (expected, actual) => {
     return incorrect / len;
 }
 
-//The Main part: SVM!!!!!!
-console.log("Hey Nerd, Check this out!");
-console.log("Behold, the mighty Support Vector Machine!!!");
-console.log("\n<==========================================>\n\n\n");
+//HyperParameters:
+var kernel = document.getElementById("HP_KERNEL").value;
 
-const svm = new SVM({
-    kernel: SVM.KERNEL_TYPES.RBF,
-    type: SVM.SVM_TYPES.C_SVC,
-    gamma: 0.25,
-    cost: 1,
-    quiet: true
-});
+export function retrain() {
+    switch (kernel) {
+        case 0:
+            kernel = SVM.KERNEL_TYPES.LINEAR;
+            break;
 
-svm.train(data, labels);
+        case 0:
+            kernel = SVM.KERNEL_TYPES.POLYNOMIAL;
+            break;
 
-const svmPredictions = svm.predict(data);
-const svmCvPredictions = svm.crossValidation(data, labels, 5);
+        case 0:
+            kernel = SVM.KERNEL_TYPES.RBF;
+            break;
 
-console.log("Loss for predictions: " + Math.round(loss(labels, svmPredictions) * 100) + "%");
-console.log("Loss for crossvalidated predictions: " + Math.round(loss(labels, svmCvPredictions) * 100) + "%");
+        case 0:
+            kernel = SVM.KERNEL_TYPES.SIGMOID;
+            break;
+
+        default:
+            kernel = SVM.KERNEL_TYPES.RBF;
+            break;
+
+    }
+
+    //The Main part: SVM!!!!!!
+    console.log("Hey Nerd, Check this out!");
+    console.log("Behold, the mighty Support Vector Machine!!!");
+    console.log("\n<==========================================>\n\n\n");
+
+    const svm = new SVM({
+        kernel: kernel,
+        type: SVM.SVM_TYPES.C_SVC,
+        gamma: Math.pow(10, document.getElementById("HP_COST").value),
+        cost: Math.pow(10, document.getElementById("HP_GAMMA").value),
+        quiet: true
+    });
+
+    svm.train(data, labels);
+
+    const svmPredictions = svm.predict(data);
+    const svmCvPredictions = svm.crossValidation(data, labels, 5);
+
+    console.log("Loss for predictions: " + Math.round(loss(labels, svmPredictions) * 100) + "%");
+    console.log("Loss for crossvalidated predictions: " + Math.round(loss(labels, svmCvPredictions) * 100) + "%");
+}

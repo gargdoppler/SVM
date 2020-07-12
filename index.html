@@ -109,63 +109,10 @@
                                     <tr>
                                         <td><label for="HP_COST" id="cost_value">cost &nbsp;&nbsp; 1.00e+3</label></td>
                                         <td><input name="cost" type="range" step="0.0001" min="-3" max="3" id="HP_COST" style="vertical-align: text-top;" class="slider"></td>
-                                        <script>
-                                            var sliderc = document.getElementById("HP_COST");
-                                            var outputc = document.getElementById("cost_value");
-                                            var intc = Math.pow(10, sliderc.value);
-                                            var expoc = Math.round(Number.parseFloat(sliderc.value) - 0.5);
-
-                                            if (expoc >= 0) {
-                                                outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e+" + expoc + "&nbsp;&nbsp;&nbsp;";
-                                            } else {
-                                                outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
-                                            }
-                                            sliderc.oninput = function() {
-                                                intc = Math.pow(10, this.value);
-
-                                                expoc = Math.round(Number.parseFloat(this.value) - 0.5);
-
-                                                if (expoc >= 0) {
-                                                    outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e+" + expoc + "&nbsp;&nbsp;&nbsp;";
-                                                } else {
-                                                    outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
-                                                }
-                                            }
-
-                                            function addZeroes(num) {
-                                                const dec = num.split('.')[1]
-                                                const len = dec && dec.length > 2 ? dec.length : 2
-                                                return Number(num).toFixed(len)
-                                            }
-                                        </script>
                                     </tr>
                                     <tr>
                                         <td><label for="HP_GAMMA" id="gamma_value">gamma &nbsp;&nbsp; 1.00e+1</label></td>
                                         <td><input name="gamma" type="range" step="0.0001" min="-3" max="3" id="HP_GAMMA" style="vertical-align: text-top;" class="slider"></td>
-                                        <script>
-                                            var sliderg = document.getElementById("HP_GAMMA");
-                                            var outputg = document.getElementById("gamma_value");
-                                            var intg = Math.pow(10, sliderg.value);
-
-                                            var expog = Math.round(Number.parseFloat(sliderg.value) - 0.5);
-
-                                            if (expog >= 0) {
-                                                outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e+" + expog;
-                                            } else {
-                                                outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
-                                            }
-                                            sliderg.oninput = function() {
-                                                intg = Math.pow(10, this.value);
-
-                                                expog = Math.round(Number.parseFloat(this.value) - 0.5);
-
-                                                if (expog >= 0) {
-                                                    outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e+" + expog;
-                                                } else {
-                                                    outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
-                                                }
-                                            }
-                                        </script>
                                     </tr>
                                 </tbody>
                             </table>
@@ -175,7 +122,7 @@
             </section>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script src="parameters.js"></script>
 </body>
 
 </html>
