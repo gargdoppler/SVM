@@ -25,25 +25,31 @@ const loss = (expected, actual) => {
 var kernel = document.getElementById("HP_KERNEL").value;
 
 export function retrain() {
+    kernel = document.getElementById("HP_KERNEL").value;
     switch (kernel) {
-        case 0:
+        case '0':
             kernel = SVM.KERNEL_TYPES.LINEAR;
+            console.log("Kernel: Linear");
             break;
 
-        case 0:
+        case '1':
             kernel = SVM.KERNEL_TYPES.POLYNOMIAL;
+            console.log("Kernel: Polynomail");
             break;
 
-        case 0:
+        case '2':
             kernel = SVM.KERNEL_TYPES.RBF;
+            console.log("Kernel: RBF");
             break;
 
-        case 0:
+        case '3':
             kernel = SVM.KERNEL_TYPES.SIGMOID;
+            console.log("Kernel: Sigmoid");
             break;
 
         default:
             kernel = SVM.KERNEL_TYPES.RBF;
+            console.log("Kernel: RBoF");
             break;
 
     }
@@ -67,5 +73,5 @@ export function retrain() {
     const svmCvPredictions = svm.crossValidation(data, labels, 5);
 
     console.log("Loss for predictions: " + Math.round(loss(labels, svmPredictions) * 100) + "%");
-    console.log("Loss for crossvalidated predictions: " + Math.round(loss(labels, svmCvPredictions) * 100) + "%");
+    console.log("Loss for crossvalidated predictions: " + Math.round(loss(labels, svmCvPredictions) * 100) + "%\n\n");
 }

@@ -11,7 +11,7 @@ if (expoc >= 0) {
 } else {
     outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
 }
-sliderc.oninput = function() {
+sliderc.onchange = function() {
     intc = Math.pow(10, this.value);
 
     expoc = Math.round(Number.parseFloat(this.value) - 0.5);
@@ -37,7 +37,7 @@ if (expog >= 0) {
 } else {
     outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
 }
-sliderg.oninput = function() {
+sliderg.onchange = function() {
     intg = Math.pow(10, this.value);
 
     expog = Math.round(Number.parseFloat(this.value) - 0.5);
@@ -52,7 +52,7 @@ sliderg.oninput = function() {
 
 //Kernel
 var kernel = document.getElementById("HP_KERNEL");
-kernel.oninput = function() {
+kernel.onchange = function() {
     index.retrain();
 }
 
