@@ -1,4 +1,4 @@
-import * as index from './index.js';
+import * as svm from './svm.js';
 
 //Cost Parameter
 var sliderc = document.getElementById("HP_COST");
@@ -22,7 +22,7 @@ sliderc.onchange = function() {
         outputc.innerHTML = "cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + addZeroes(String(Math.round((intc / Math.pow(10, expoc)) * 100) / 100)) + "e" + expoc + "&nbsp;&nbsp;&nbsp;";
     }
 
-    index.retrain();
+    svm.retrain();
 }
 
 //Gamma Parameter
@@ -47,17 +47,29 @@ sliderg.onchange = function() {
     } else {
         outputg.innerHTML = "gamma &nbsp;&nbsp; " + addZeroes(String(Math.round((intg / Math.pow(10, expog)) * 100) / 100)) + "e" + expog;
     }
-    index.retrain();
+    svm.retrain();
 }
 
 //Kernel
 var kernel = document.getElementById("HP_KERNEL");
 kernel.onchange = function() {
-    index.retrain();
+    svm.retrain();
 }
 
 function addZeroes(num) {
     const dec = num.split('.')[1]
     const len = dec && dec.length > 2 ? dec.length : 2
     return Number(num).toFixed(len)
+}
+
+export function getKernel() {
+    return document.getElementById("HP_KERNEL").value;
+}
+
+export function getCost() {
+    return Math.pow(10, sliderc.value);
+}
+
+export function getGamma() {
+    return Math.pow(10, sliderg.value);
 }

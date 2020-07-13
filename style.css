@@ -11722,3 +11722,92 @@ code {
     background: #4CAF50;
     cursor: pointer;
 }
+
+#mega_container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#db_container {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+#canvas_db {
+    width: 100%;
+}
+
+#Class_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#Class_0 {
+    margin-top: 10px;
+    width: 125px;
+    text-align: center;
+}
+
+#Class_1 {
+    margin-top: 10px;
+    width: 125px;
+    text-align: center;
+}
+
+#Class_2 {
+    margin-top: 10px;
+    width: 125px;
+    text-align: center;
+}
+
+#Class_3 {
+    margin-top: 10px;
+    width: 125px;
+    text-align: center;
+}
+
+#red {
+    background: red;
+    border: 1px solid black;
+    border-radius: 15px;
+    height: 50px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+#yellow {
+    background: yellow;
+    border: 1px solid black;
+    border-radius: 15px;
+    height: 50px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+#blue {
+    background: blue;
+    border: 1px solid black;
+    border-radius: 15px;
+    height: 50px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+#green {
+    background: green;
+    border: 1px solid black;
+    border-radius: 15px;
+    height: 50px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+#param_container {
+    height: 100%;
+    width: 50%;
+}
