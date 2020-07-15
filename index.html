@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Support Vector Machine
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <style>
+        canvas {
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="background-color: #eafdf8;">
+        <div class="tfjs-example-container">
+            <section class="title-area">
+                <h1 id="heading">
+                    Support Vector Machines
+                </h1>
+                <p class="subtitle" id="subtitle">
+                    The Mr. Perfect of Machine Learning Classifiers.
+                </p>
+            </section>
+            <section>
+                <p class="section-head">
+                    Description
+                </p>
+                <p>
+                    A Support Vector Machine is different from other Machine Learning Classifiers because it aims to create the widest possible street between the two types of examples that does not touch or contain any point.
+                </p>
+                <div id="container">
+                    <div id="MLC" style="margin-right: 1em;">
+                        <span id="d01"></span>
+                        <span id="d02"></span>
+                        <span id="d03"></span>
+                        <span id="d04"></span>
+                        <span id="d05"></span>
+                        <span id="d06"></span>
+                        <span id="d07"></span>
+                        <span id="d08"></span>
+                        <span id="d11"></span>
+                        <span id="d12"></span>
+                        <span id="d13"></span>
+                        <span id="d14"></span>
+                        <span id="d15"></span>
+                        <span id="d16"></span>
+                        <span id="d17"></span>
+                        <span id="d18"></span>
+                        <span id="db1"></span>
+                        <span id="db2"></span>
+                        <span id="db3"></span>
+                        <svg height="190" width="500">
+                            <line x1="150" y1="15" x2="150" y2="15" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate attributeName="x2" from="150" to="480" dur="4s" repeatCount="5" fill="freeze" values="150; 150; 480; 480;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                                <animate attributeName="y2" from="15" to="180" dur="4s" repeatCount="5" fill="freeze" values="15; 15; 180; 180;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                            </line>
+                            <line x1="230" y1="-10" x2="190" y2="-20" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate attributeName="x2" from="230" to="400" dur="4s" repeatCount="5" fill="freeze" values="230; 230; 400; 400;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                                <animate attributeName="y2" from="0" to="240" dur="4s" repeatCount="5" fill="freeze" values="0; 0; 240; 240;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                            </line>
+                            <line x1="220" y1="0" x2="220" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate attributeName="x2" from="220" to="470" dur="4s" repeatCount="5" fill="freeze" values="220; 220; 470; 470;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                                <animate attributeName="y2" from="0" to="200" dur="4s" repeatCount="5" fill="freeze" values="0; 0; 200; 200;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                            </line>
+                        </svg>
+                        <p style="margin-top: 2em; text-align: center;">Any other Machine Learning Classifier Decision boundary</p>
+                    </div>
+                    <div id="SVM" style="margin-left: 1em;">
+                        <span id="d_01"></span>
+                        <span id="d_02"></span>
+                        <span id="d_03"></span>
+                        <span id="d_04"></span>
+                        <span id="d_05"></span>
+                        <span id="d_06"></span>
+                        <span id="d_07"></span>
+                        <span id="d_08"></span>
+                        <span id="d_11"></span>
+                        <span id="d_12"></span>
+                        <span id="d_13"></span>
+                        <span id="d_14"></span>
+                        <span id="d_15"></span>
+                        <span id="d_16"></span>
+                        <span id="d_17"></span>
+                        <span id="d_18"></span>
+                        <svg height="190" width="500">
+                            <line x1="190" y1="0" x2="190" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate attributeName="x2" from="190" to="440" dur="4s" repeatCount="5" fill="freeze" values="190; 190; 440; 440;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                                <animate attributeName="y2" from="0" to="200" dur="4s" repeatCount="5" fill="freeze" values="0; 0; 200; 200;" keyTimes="0; 0.5; 0.75; 1"></animate>
+                            </line>
+                          </svg>
+                        <p style="margin-top: 2em; text-align: center">SVM Decision boundary</p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class="section-head">
+                    Playground
+                </p>
+                <div>
+                    <div style="text-align: center;">
+                        <h2>Support vector classification</h2>
+                        <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser.</canvas><br /><br />
+                    </div>
+
+                    <div id="optsdiv">
+                        <div style="width:230px; float: left; margin-left: 10px;">
+                            <div id="slider1"></div><br/><span id="creport">C = 1.0</span></div>
+                        <div style="width:230px; float: right; margin-right: 10px;">
+                            <div id="slider2"></div><br/><span id="sigreport">RBF Kernel sigma = 1.0</span></div>
+                    </div>
+            </section>
+            </div>
+        </div>
+        <script src="index.js"></script>
+</body>
+
+</html>
