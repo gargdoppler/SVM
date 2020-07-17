@@ -109,6 +109,15 @@
                     <div style="text-align: center;">
                         <h2>Support vector classification</h2>
                         <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser.</canvas><br /><br />
+                        <div style="text-align: center;">
+                            <label for="Kernel">Kernel </label>
+                            <select name="Kernel" id="kernel" onchange="updatekernel()">
+                              <option value="0">Linear</option>
+                              <option value="1">RBF</option>
+                              <option value="2">Polynomial</option>
+                              <option value="3">Sigmoid</option>
+                            </select></div><br><br>
+                        
                     </div>
 
                     <div id="optsdiv">
@@ -116,7 +125,7 @@
                             <div id="slider1"></div><br/><span id="creport">C = 1.0</span></div>
                         <div style="width:230px; float: right; margin-right: 10px;">
                             <div id="slider2"></div><br/><span id="sigreport">RBF Kernel sigma = 1.0</span></div>
-                    </div>
+                </div>
             </section>
             </div>
         </div>
