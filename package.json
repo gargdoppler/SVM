@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Browser Implementation of a Support Vector Machine Classifier",
     "main": "index.js",
-    "author": "Garg-Doppler",
+    "author": "Garg-Doppler, Abhinav Saini, Vivek Kumar",
     "license": "MIT",
     "dependencies": {
         "svm": "^0.1.1"

@@ -7,11 +7,15 @@ var wb; // weights and offset structure
 var ss = 50.0; // scaling factor for drawing
 var trainstats;
 var dirty = true;
-var kernelid = 1;
-var rbfKernelSigma = 0.5;
+
+var degree_value = 3;
+var rbfKernelSigma = 1.0;
 var svmC = 1.0;
+var a_value = 1.0;
+
 var SVM = new svm.SVM();
 
+var kernelid = document.getElementById("kernel");
 var c = document.getElementById("NPGcanvas");
 var ctx = c.getContext('2d');
 
@@ -42,20 +46,41 @@ function myinit() {
     retrainSVM();
 }
 
+function poly(degree , a){
+    return function(v1, v2) {
+        var s=0;
+        for(var q=0; q<v1.length; q++) { s += ((v1[q] * v2[q])+a) } 
+        return Math.pow(s, degree);
+}
+
+}
+
+
 function retrainSVM() {
 
-    if (kernelid === 1) {
-        trainstats = SVM.train(data, labels, { kernel: 'rbf', rbfsigma: rbfKernelSigma, C: svmC });
-    }
-    if (kernelid === 0) {
+    if (kernelid.value === "0") {
         trainstats = SVM.train(data, labels, { kernel: 'linear', C: svmC });
         wb = SVM.getWeights();
+    }
+
+    else if (kernelid.value === "1") {
+        trainstats = SVM.train(data, labels, { kernel: 'rbf', rbfsigma: rbfKernelSigma, C: svmC });
+    }
+    
+    else if (kernelid.value === "2") {
+        trainstats = SVM.train(data, labels, { kernel: poly(degree, a), degree: degree_value, C: svmC, a:a_value });
+    }
+    
+    else if (kernelid.value === "3") {
+        trainstats = SVM.train(data, labels, { kernel: 'sig', rbfsigma: rbfKernelSigma, C: svmC });
     }
 
     dirty = true; // to redraw screen
 }
 
 function update() {}
+
+
 
 function draw() {
     if (!dirty) return;
@@ -97,7 +122,7 @@ function draw() {
     }
 
     // if linear kernel, draw decision boundary and margin lines
-    if (kernelid == 0) {
+    if (kernelid.value == "0") {
 
         var xs = [-5, 5];
         var ys = [0, 0];
@@ -141,9 +166,10 @@ function draw() {
     for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-5) numsupp++; }
     ctx.fillText("Number of support vectors: " + numsupp + " / " + N, 10, HEIGHT - 50);
 
-    if (kernelid === 1) ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
-    if (kernelid === 0) ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
-
+    
+    if (kernelid.value === "0") ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
+    if (kernelid.value === "1") ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
+    if (kernelid.value === "2") ctx.fillText("Using Polynomial kernel with degree = " + degree_value, 10, HEIGHT - 70);
     ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
 }
 
@@ -174,12 +200,6 @@ function keyUp(key) {
         data = data.splice(0, 10);
         labels = labels.splice(0, 10);
         N = 10;
-        retrainSVM();
-    }
-    if (key == 75) { // 'k'
-
-        // toggle between kernels: rbf or linear
-        kernelid = 1 - kernelid; // toggle 1 and 0
         retrainSVM();
     }
 }
@@ -224,15 +244,21 @@ function setChange(FPS) {
 
     canvas = document.getElementById('NPGcanvas');
     ctx = canvas.getContext('2d');
+    
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     canvas.addEventListener('click', eventClick, false);
     document.addEventListener('keyup', eventKeyUp, true);
     document.addEventListener('keydown', eventKeyDown, true);
-
+    document.addEventListener('change', updatekernel, true);
     setInterval(main, 1000 / FPS);
 
     myinit();
+}
+
+function updatekernel(){
+    kernelid = document.getElementById("kernel"); 
+    retrainSVM();
 }
 
 function main() {
@@ -251,10 +277,12 @@ function refreshSig(event, ui) {
     var logSig = ui.value;
     rbfKernelSigma = Math.pow(10, logSig);
     $("#sigreport").text("RBF Kernel sigma = " + rbfKernelSigma.toPrecision(2));
-    if (kernelid == 1) {
+    if (kernelid.value === "1") {
         retrainSVM();
     }
 }
+
+
 
 $(function() {
     // for C parameter
