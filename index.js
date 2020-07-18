@@ -8,8 +8,11 @@ var ss = 50.0; // scaling factor for drawing
 var trainstats;
 var dirty = true;
 
-var rbfKernelSigma = 0.5;
+var degree_value = 3;
+var rbfKernelSigma = 1.0;
 var svmC = 1.0;
+var a_value = 1.0;
+
 var SVM = new svm.SVM();
 
 var kernelid = document.getElementById("kernel");
@@ -43,6 +46,16 @@ function myinit() {
     retrainSVM();
 }
 
+function poly(degree , a){
+    return function(v1, v2) {
+        var s=0;
+        for(var q=0; q<v1.length; q++) { s += ((v1[q] * v2[q])+a) } 
+        return Math.pow(s, degree);
+}
+
+}
+
+
 function retrainSVM() {
 
     if (kernelid.value === "0") {
@@ -54,6 +67,13 @@ function retrainSVM() {
         trainstats = SVM.train(data, labels, { kernel: 'rbf', rbfsigma: rbfKernelSigma, C: svmC });
     }
     
+    else if (kernelid.value === "2") {
+        trainstats = SVM.train(data, labels, { kernel: poly(degree, a), degree: degree_value, C: svmC, a:a_value });
+    }
+    
+    else if (kernelid.value === "3") {
+        trainstats = SVM.train(data, labels, { kernel: 'sig', rbfsigma: rbfKernelSigma, C: svmC });
+    }
 
     dirty = true; // to redraw screen
 }
@@ -146,9 +166,10 @@ function draw() {
     for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-5) numsupp++; }
     ctx.fillText("Number of support vectors: " + numsupp + " / " + N, 10, HEIGHT - 50);
 
-    if (kernelid.value === "1") ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
+    
     if (kernelid.value === "0") ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
-
+    if (kernelid.value === "1") ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
+    if (kernelid.value === "2") ctx.fillText("Using Polynomial kernel with degree = " + degree_value, 10, HEIGHT - 70);
     ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
 }
 
