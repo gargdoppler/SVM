@@ -8,14 +8,18 @@ var ss = 50.0; // scaling factor for drawing
 var trainstats;
 var dirty = true;
 
-var degree_value = 3;
+var degree_value = 2;
 var rbfKernelSigma = 1.0;
+var c_sig = 1.0;
+var alpha = 1.0;
 var svmC = 1.0;
 var a_value = 1.0;
 
 var SVM = new svm.SVM();
+document.getElementById("kernelImg").appendChild(document.getElementById("linear"));
+document.getElementById("linear").style.display = "block";
 
-var kernelid = document.getElementById("kernel");
+var kernelid = 0;
 var c = document.getElementById("NPGcanvas");
 var ctx = c.getContext('2d');
 
@@ -46,33 +50,115 @@ function myinit() {
     retrainSVM();
 }
 
-function poly(degree , a){
+function poly() {
     return function(v1, v2) {
-        var s=0;
-        for(var q=0; q<v1.length; q++) { s += ((v1[q] * v2[q])+a) } 
-        return Math.pow(s, degree);
-}
+        var s = 0;
+        for (var q = 0; q < v1.length; q++) { s += ((v1[q] * v2[q]) + a_value) }
+        return Math.pow(s, degree_value);
+    }
 
 }
 
+function sigmoid() {
+    return function(v1, v2) {
+        var s = 0;
+        for (var q = 0; q < v1.length; q++) { s += (v1[q] * v2[q]) }
+        return Math.tanh(((alpha * s) + c_sig));
+    }
+
+}
+
+function hideSig() {
+    document.getElementById("sigreport").style.display = "none";
+    document.getElementById("slider2").style.display = "none";
+}
+
+function hideDeg() {
+    document.getElementById("degreport").style.display = "none";
+    document.getElementById("slider3").style.display = "none";
+}
+
+function hidea() {
+    document.getElementById("areport").style.display = "none";
+    document.getElementById("slider4").style.display = "none";
+}
+
+function hidealp() {
+    document.getElementById("alpreport").style.display = "none";
+    document.getElementById("slider5").style.display = "none";
+}
+
+function hidecsig() {
+    document.getElementById("csigreport").style.display = "none";
+    document.getElementById("slider6").style.display = "none";
+}
+
+function showSig() {
+    document.getElementById("report").appendChild(document.getElementById("sigreport"));
+    document.getElementById("rider").appendChild(document.getElementById("slider2"));
+    document.getElementById("sigreport").style.display = "block";
+    document.getElementById("slider2").style.display = "block";
+}
+
+function showDeg() {
+    document.getElementById("report").appendChild(document.getElementById("degreport"));
+    document.getElementById("rider").appendChild(document.getElementById("slider3"));
+    document.getElementById("degreport").style.display = "block";
+    document.getElementById("slider3").style.display = "block";
+}
+
+function showa() {
+    document.getElementById("preport").appendChild(document.getElementById("areport"));
+    document.getElementById("provider").appendChild(document.getElementById("slider4"));
+    document.getElementById("areport").style.display = "block";
+    document.getElementById("slider4").style.display = "block";
+}
+
+function showalp() {
+    document.getElementById("report").appendChild(document.getElementById("alpreport"));
+    document.getElementById("rider").appendChild(document.getElementById("slider5"));
+    document.getElementById("alpreport").style.display = "block";
+    document.getElementById("slider5").style.display = "block";
+}
+
+function showcsig() {
+    document.getElementById("preport").appendChild(document.getElementById("csigreport"));
+    document.getElementById("provider").appendChild(document.getElementById("slider6"));
+    document.getElementById("csigreport").style.display = "block";
+    document.getElementById("slider6").style.display = "block";
+}
 
 function retrainSVM() {
 
-    if (kernelid.value === "0") {
+    if (kernelid == 0) {
         trainstats = SVM.train(data, labels, { kernel: 'linear', C: svmC });
         wb = SVM.getWeights();
-    }
-
-    else if (kernelid.value === "1") {
+        hideSig();
+        hidea();
+        hidealp();
+        hidecsig();
+        hideDeg();
+    } else if (kernelid == 1) {
         trainstats = SVM.train(data, labels, { kernel: 'rbf', rbfsigma: rbfKernelSigma, C: svmC });
-    }
-    
-    else if (kernelid.value === "2") {
-        trainstats = SVM.train(data, labels, { kernel: poly(degree, a), degree: degree_value, C: svmC, a:a_value });
-    }
-    
-    else if (kernelid.value === "3") {
-        trainstats = SVM.train(data, labels, { kernel: 'sig', rbfsigma: rbfKernelSigma, C: svmC });
+        showSig();
+        hidea();
+        hidealp();
+        hidecsig();
+        hideDeg();
+    } else if (kernelid == 2) {
+        trainstats = SVM.train(data, labels, { kernel: poly(), C: svmC });
+        hideSig();
+        showa();
+        hidealp();
+        hidecsig();
+        showDeg();
+    } else if (kernelid == 3) {
+        trainstats = SVM.train(data, labels, { kernel: sigmoid(), rbfsigma: rbfKernelSigma, C: svmC });
+        hideSig();
+        hidea();
+        showalp();
+        showcsig();
+        hideDeg();
     }
 
     dirty = true; // to redraw screen
@@ -118,11 +204,11 @@ function draw() {
         if (SVM.alpha[i] > 1e-2) ctx.lineWidth = 3; // distinguish support vectors
         else ctx.lineWidth = 1;
 
-        drawCircle(data[i][0] * ss + WIDTH / 2, data[i][1] * ss + HEIGHT / 2, Math.floor(3 + SVM.alpha[i] * 5.0 / svmC));
+        drawCircle(data[i][0] * ss + WIDTH / 2, data[i][1] * ss + HEIGHT / 2, Math.floor(5));
     }
 
     // if linear kernel, draw decision boundary and margin lines
-    if (kernelid.value == "0") {
+    if (kernelid == 0) {
 
         var xs = [-5, 5];
         var ys = [0, 0];
@@ -166,11 +252,26 @@ function draw() {
     for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-5) numsupp++; }
     ctx.fillText("Number of support vectors: " + numsupp + " / " + N, 10, HEIGHT - 50);
 
-    
-    if (kernelid.value === "0") ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
-    if (kernelid.value === "1") ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
-    if (kernelid.value === "2") ctx.fillText("Using Polynomial kernel with degree = " + degree_value, 10, HEIGHT - 70);
-    ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
+
+    if (kernelid == 0) {
+        ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
+        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
+    }
+    if (kernelid == 1) {
+        ctx.fillText("Using Rbf kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
+        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
+    }
+    if (kernelid == 2) {
+        ctx.fillText("Using Polynomial kernel with degree = " + degree_value, 10, HEIGHT - 70);
+        ctx.fillText("Using Polynomial kernel with a = " + a_value.toPrecision(2), 10, HEIGHT - 90);
+        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 110);
+    }
+    if (kernelid == 3) {
+        ctx.fillText("Using Sigmoid kernel with alpha = " + alpha.toPrecision(2), 10, HEIGHT - 70);
+        ctx.fillText("Using Sigmoid kernel with c = " + c_sig.toPrecision(2), 10, HEIGHT - 90);
+        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 110);
+    }
+
 }
 
 function drawCircle(x, y, r) {
@@ -194,12 +295,60 @@ function mouseClick(x, y, shiftPressed) {
 
 function keyUp(key) {
 
-    if (key == 82) { // 'r'
+    if (key == 67) { // 'c'
 
-        // reset to original data and retrain
+        // clear the points
         data = data.splice(0, 10);
         labels = labels.splice(0, 10);
         N = 10;
+        retrainSVM();
+    }
+
+    if (key == 76) { // 'l'
+        // Switch to linear kernel
+        kernelid = 0;
+        document.getElementById("linear").style.display = "none";
+        document.getElementById("rbf").style.display = "none";
+        document.getElementById("poly").style.display = "none";
+        document.getElementById("sigmoid").style.display = "none";
+        document.getElementById("kernelImg").appendChild(document.getElementById("linear"));
+        document.getElementById("linear").style.display = "block";
+        retrainSVM();
+    }
+
+    if (key == 82) { // 'r'
+        // Switch to rbf kernel
+        kernelid = 1;
+        document.getElementById("linear").style.display = "none";
+        document.getElementById("rbf").style.display = "none";
+        document.getElementById("poly").style.display = "none";
+        document.getElementById("sigmoid").style.display = "none";
+        document.getElementById("kernelImg").appendChild(document.getElementById("rbf"));
+        document.getElementById("rbf").style.display = "block";
+        retrainSVM();
+    }
+
+    if (key == 80) { // 'p'
+        // Switch to polynomial kernel
+        kernelid = 2;
+        document.getElementById("linear").style.display = "none";
+        document.getElementById("rbf").style.display = "none";
+        document.getElementById("poly").style.display = "none";
+        document.getElementById("sigmoid").style.display = "none";
+        document.getElementById("kernelImg").appendChild(document.getElementById("poly"));
+        document.getElementById("poly").style.display = "block";
+        retrainSVM();
+    }
+
+    if (key == 83) { // 's'
+        // Switch to sigmoid kernel
+        document.getElementById("linear").style.display = "none";
+        document.getElementById("rbf").style.display = "none";
+        document.getElementById("poly").style.display = "none";
+        document.getElementById("sigmoid").style.display = "none";
+        document.getElementById("kernelImg").appendChild(document.getElementById("sigmoid"));
+        document.getElementById("sigmoid").style.display = "block";
+        kernelid = 3;
         retrainSVM();
     }
 }
@@ -244,21 +393,15 @@ function setChange(FPS) {
 
     canvas = document.getElementById('NPGcanvas');
     ctx = canvas.getContext('2d');
-    
+
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
     canvas.addEventListener('click', eventClick, false);
     document.addEventListener('keyup', eventKeyUp, true);
     document.addEventListener('keydown', eventKeyDown, true);
-    document.addEventListener('change', updatekernel, true);
     setInterval(main, 1000 / FPS);
 
     myinit();
-}
-
-function updatekernel(){
-    kernelid = document.getElementById("kernel"); 
-    retrainSVM();
 }
 
 function main() {
@@ -277,9 +420,37 @@ function refreshSig(event, ui) {
     var logSig = ui.value;
     rbfKernelSigma = Math.pow(10, logSig);
     $("#sigreport").text("RBF Kernel sigma = " + rbfKernelSigma.toPrecision(2));
-    if (kernelid.value === "1") {
-        retrainSVM();
-    }
+    retrainSVM();
+}
+
+function refreshDeg(event, ui) {
+    var logDeg = ui.value;
+    degree_value = logDeg;
+    $("#degreport").text("Polynomial Kernel degree = " + degree_value);
+    retrainSVM();
+}
+
+function refreshA(event, ui) {
+    var logA = ui.value;
+    a_value = Math.pow(10, logA);
+    $("#areport").text("Polynomial Kernel a = " + a_value.toPrecision(2));
+    retrainSVM();
+
+}
+
+function refreshAlpha(event, ui) {
+    var logAlpha = ui.value;
+    alpha = Math.pow(10, logAlpha);
+    $("#alpreport").text("Sigmoid Kernel alpha = " + alpha.toPrecision(2));
+    retrainSVM();
+
+}
+
+function refreshCsig(event, ui) {
+    var logCsig = ui.value;
+    c_sig = Math.pow(10, logCsig);
+    $("#csigreport").text("Sigmoid Kernel c-sigma = " + c_sig.toPrecision(2));
+    retrainSVM();
 }
 
 
@@ -299,7 +470,48 @@ $(function() {
     // for rbf kernel sigma
     $("#slider2").slider({
         orientation: "horizontal",
+        animate: true,
         slide: refreshSig,
+        max: 2.0,
+        min: -2.0,
+        step: 0.1,
+        value: 0.0
+    });
+
+    $("#slider3").slider({
+        orientation: "horizontal",
+        animate: true,
+        slide: refreshDeg,
+        max: 8,
+        min: 2,
+        step: 1,
+        value: 2
+    });
+
+    $("#slider4").slider({
+        orientation: "horizontal",
+        animate: true,
+        slide: refreshA,
+        max: 2.0,
+        min: -2.0,
+        step: 0.1,
+        value: 0.0
+    });
+
+    $("#slider5").slider({
+        orientation: "horizontal",
+        animate: true,
+        slide: refreshAlpha,
+        max: 2.0,
+        min: -2.0,
+        step: 0.1,
+        value: 0.0
+    });
+
+    $("#slider6").slider({
+        orientation: "horizontal",
+        animate: true,
+        slide: refreshCsig,
         max: 2.0,
         min: -2.0,
         step: 0.1,
