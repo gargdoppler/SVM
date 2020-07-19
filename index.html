@@ -105,17 +105,40 @@
                 <p class="section-head">
                     Playground
                 </p>
-                <div>
-                    <div style="text-align: center;">
+                <p style="text-align: center;">
+                    Click for adding a yellow point. <b style="color: brown;">||</b> Shift + Click for adding a blue point. <b style="color: brown;">||</b> Press c for clearing all the points you added. <b style="color: brown;">||</b> Press r to switch
+                    to the RBF kernel.
+                    <b style="color: brown;">||</b> Press p to switch to the Polynomial kernel. <b style="color: brown;">||</b> Press s to switch to the Sigmoid kernel.
+                    <b style="color: brown;">||</b> Press l to switch back to the Linear kernel.
+                </p>
+                <div id="khelobc">
+                    <div id="canvas_box">
                         <h2>Support vector classification</h2>
                         <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser.</canvas><br /><br />
                     </div>
 
                     <div id="optsdiv">
-                        <div style="width:230px; float: left; margin-left: 10px;">
+                        <div id="kernelImg"></div>
+                        <img id="linear" src="./images/linear.png" style="display: none; width: 283px; margin-left:177px;margin-top: 114px; height: 66px;"></img>
+                        <img id="rbf" src="./images/rbf.png" style="display: none; width: 429px; margin-left:118px;margin-top: 71px; height: 109px;"></img>
+                        <img id="poly" src="./images/poly.png" style="display: none; width: 376px; margin-left:130px;margin-top: 113px; height: 67px;"></img>
+                        <img id="sigmoid" src="./images/sigmoid.png" style="display: none; width: 440px; margin-left:104px;margin-top: 108px; height: 72px;"></img>
+                        <div style="width:230px; margin-left: 200px; margin-top: 50px;">
                             <div id="slider1"></div><br/><span id="creport">C = 1.0</span></div>
-                        <div style="width:230px; float: right; margin-right: 10px;">
-                            <div id="slider2"></div><br/><span id="sigreport">RBF Kernel sigma = 1.0</span></div>
+                        <div style="width:230px; margin-left: 200px;margin-top: 25px;">
+                            <div id="rider"></div><br/><span id="report"></span></div>
+                        <div style="width:230px; margin-left: 200px;margin-top: 25px;">
+                            <div id="provider"></div><br/><span id="preport"></span></div>
+                        <div style="width:230px; margin-top: 10px;margin-left: 200px;">
+                            <div id="slider2" style="display: none;"></div><br/><span id="sigreport" style="display: none;">RBF Kernel sigma = 1.0</span></div>
+                        <div style="width:230px; margin-top: 10px;margin-left: 200px;">
+                            <div id="slider3" style="display: none;"></div><br/><span id="degreport" style="display: none;">Polynomial Kernel degree = 2</span></div>
+                        <div style="width:230px; margin-top: 10px;margin-left: 200px;">
+                            <div id="slider4" style="display: none;"></div><br/><span id="areport" style="display: none;">Polynomial Kernel a = 1.0</span></div>
+                        <div style="width:230px; margin-top: 10px;margin-left: 200px;">
+                            <div id="slider5" style="display: none;"></div><br/><span id="alpreport" style="display: none;">Sigmoid Kernel alpha = 1.0</span></div>
+                        <div style="width:230px; margin-top: 10px;margin-left: 200px;">
+                            <div id="slider6" style="display: none;"></div><br/><span id="csigreport" style="display: none;">Sigmoid Kernel c = 1.0</span></div>
                     </div>
             </section>
             </div>
