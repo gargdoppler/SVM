@@ -8,11 +8,11 @@ var ss = 50.0; // scaling factor for drawing
 var trainstats;
 var dirty = true;
 
-var degree_value = 2;
+var degree_value = 3;
 var rbfKernelSigma = 1.0;
-var c_sig = 1.0;
-var alpha = 1.0;
-var svmC = 1.0;
+var c_sig = 0.050;
+var alpha = 0.32;
+var svmC = 10.0;
 var a_value = 1.0;
 
 var SVM = new svm.SVM();
@@ -485,7 +485,7 @@ $(function() {
         max: 8,
         min: 2,
         step: 1,
-        value: 2
+        value: 3
     });
 
     $("#slider4").slider({
