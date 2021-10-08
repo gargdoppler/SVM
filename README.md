@@ -9,4 +9,4 @@ Follow these steps to run the example on your local device:
 * Run ```yarn``` in the terminal to install dependencies.
 * Run ```yarn watch``` to run the example.
 
-Check out the (website)[https://dsgiitr.github.io/svm-demo/] here
+Check out the [website](https://dsgiitr.github.io/svm-demo/) here
