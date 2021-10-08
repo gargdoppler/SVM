@@ -8,3 +8,5 @@ Follow these steps to run the example on your local device:
 * ```cd``` into the local repository.
 * Run ```yarn``` in the terminal to install dependencies.
 * Run ```yarn watch``` to run the example.
+
+Check out the (website)[https://dsgiitr.github.io/svm-demo/] here
