@@ -1,3 +1,8 @@
+/* style for canvas container */
+canvas {
+    border: 1px solid #555;
+}
+
 p.section-head {
     font-size: x-large;
     text-align: center;
