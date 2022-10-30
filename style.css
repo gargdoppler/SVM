@@ -195,3 +195,10 @@ p.section-head {
     width: 250px;
     margin-top: 10px
 }
+
+.shortcuts{
+    list-style-type:square;
+    text-align: left;
+    margin-left: 5.5em;
+    font-size: large;
+}
